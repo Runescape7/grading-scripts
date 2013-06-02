@@ -31,13 +31,12 @@
 # e.g. jsmith1-mjones
 # It expects that the first username is the owner of the shared repository.
 
+source "$(dirname "$0")/lib.sh"
+
 cd Lab1 # folder for local repository
 
 # add and fetch remote for the student repository, if it fails, rollback and exit
-git remote add -f ${1%%-*} git@bitbucket.org:${1%%-*}/lab1.git || \
-    git remote remove ${1%%-*} ; exit 1
-
-git checkout -b $1 ${1%%-*}/master # make a student branch
+getRemote $1 lab1.git || exit 1
 
 # Convert file(s) to PDF(s) and place in grading directory
 ~/Dropbox/a2pdf-1.13-OSX-Intel/a2pdf --noperl-syntax Lab1/HelloWorld.java > ../grading/Lab1/$1.java.pdf
@@ -47,55 +46,3 @@ rm ../grading/Lab1/$1.java.pdf
 rm ../grading/Lab1/$1.txt.pdf
 
 git checkout master # return to master branch
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
