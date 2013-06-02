@@ -21,7 +21,7 @@
 #     source ./lib.sh
 
 
-function getBranch {
+function getRemote {
   # Adds a remote repository to the current local repository, checks
   # out the remote master into a new branch, and switches to that branch.
   # Returns 0 if successful, or 1 if failed. If failed, any changes to
