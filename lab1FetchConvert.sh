@@ -32,7 +32,7 @@
 # It expects that the first username is the owner of the shared repository.
 
 
-source ./lib.sh
+source "$(dirname "$0")/lib.sh"
 
 
 cd Lab1 # folder for local repository

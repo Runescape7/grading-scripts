@@ -31,6 +31,8 @@
 
 # Parameter 2 is name of the assignment e.g. Lab1
 
+source "$(dirname "$0")/lib.sh"
+
 cd $2 # folder for local repository
 
 # checkout the student branch. if the branch does not exist, exit
