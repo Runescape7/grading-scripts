@@ -41,4 +41,3 @@ function getBranch {
   git checkout -b $1 ${1%%-*}/master # make a student branch
   return 0
 }
-

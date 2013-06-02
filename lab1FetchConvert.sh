@@ -31,9 +31,7 @@
 # e.g. jsmith1-mjones
 # It expects that the first username is the owner of the shared repository.
 
-
 source "$(dirname "$0")/lib.sh"
-
 
 cd Lab1 # folder for local repository
 
@@ -48,55 +46,3 @@ rm ../grading/Lab1/$1.java.pdf
 rm ../grading/Lab1/$1.txt.pdf
 
 git checkout master # return to master branch
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
