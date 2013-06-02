@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2013 Karl R. Wurst
+# Copyright (C) 2013 Karl R. Wurst, Stoney Jackson
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,8 +33,10 @@
 
 cd Lab1 # folder for local repository
 
-git remote add ${1%%-*} git@bitbucket.org:${1%%-*}/lab2.git # add a remote for the student repository
-git fetch ${1%%-*} # fetch the student work
+# add and fetch remote for the student repository, if it fails, rollback and exit
+git remote add -f ${1%%-*} git@bitbucket.org:${1%%-*}/lab1.git || \
+    git remote remove ${1%%-*} ; exit 1
+
 git checkout -b $1 ${1%%-*}/master # make a student branch
 
 # Convert file(s) to PDF(s) and place in grading directory
