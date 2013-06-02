@@ -39,7 +39,11 @@ git checkout $1 || exit 1
 # copy the graded assignment to student repository. if wrong filename, exit
 cp ../grading/$2/$1.pdf ./  || exit 1
 # copy the solution to student repository. if wrong directory, remove graded file and exit
-cp -r ../../../Labs/$2/$2'Solution' ./$2'Solution' || (rm $1.pdf ; exit 1) 
+if ! cp -r ../../../Labs/$2/$2'Solution' ./$2'Solution'
+then
+    rm $1.pdf
+    exit 1
+fi 
 
 git add $1.pdf # add the graded assignment
 git add $2'Solution' # add the solution
