@@ -33,16 +33,16 @@
 
 source "$(dirname "$0")/lib.sh"
 
-cd Lab1 # folder for local repository
+# cd Lab1 # folder for local repository
 
 # add and fetch remote for the student repository, if it fails, rollback and exit
-getRemote $1 lab1.git || exit 1
+getRemote $1 test.git || exit 1
 
 # Convert file(s) to PDF(s) and place in grading directory
-~/Dropbox/a2pdf-1.13-OSX-Intel/a2pdf --noperl-syntax Lab1/HelloWorld.java > ../grading/Lab1/$1.java.pdf
-~/Dropbox/a2pdf-1.13-OSX-Intel/a2pdf --noperl-syntax Lab1.txt > ../grading/Lab1/$1.txt.pdf
-pdftk ../grading/Lab1/$1.java.pdf ../grading/Lab1/$1.txt.pdf cat output ../grading/Lab1/$1.pdf
-rm ../grading/Lab1/$1.java.pdf
-rm ../grading/Lab1/$1.txt.pdf
+#~/Dropbox/a2pdf-1.13-OSX-Intel/a2pdf --noperl-syntax Lab1/HelloWorld.java > ../grading/Lab1/$1.java.pdf
+#~/Dropbox/a2pdf-1.13-OSX-Intel/a2pdf --noperl-syntax Lab1.txt > ../grading/Lab1/$1.txt.pdf
+#pdftk ../grading/Lab1/$1.java.pdf ../grading/Lab1/$1.txt.pdf cat output ../grading/Lab1/$1.pdf
+#rm ../grading/Lab1/$1.java.pdf
+#rm ../grading/Lab1/$1.txt.pdf
 
-git checkout master # return to master branch
+#git checkout master # return to master branch

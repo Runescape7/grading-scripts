@@ -36,8 +36,11 @@ function getRemote {
   # New branch is smith-johnson.
   # Remote is smith -> git@bitbucket.org:smith/lab1.git.
   #
-  git remote add -f ${1%%-*} git@bitbucket.org:${1%%-*}/$2 || \
-      git remote remove ${1%%-*} ; return 1
-  git checkout -b $1 ${1%%-*}/master # make a student branch
-  return 0
+  if git remote add -f ${1%%-*} git@bitbucket.org:${1%%-*}/$2 ; then
+    git checkout -b $1 ${1%%-*}/master
+    return 0
+  else
+    git remote remove ${1%%-*}
+    return 1
+  fi
 }
