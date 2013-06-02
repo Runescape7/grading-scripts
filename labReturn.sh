@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2013 Karl R. Wurst
+# Copyright (C) 2013 Karl R. Wurst, Stoney Jackson
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,10 +33,13 @@
 
 cd $2 # folder for local repository
 
-git checkout $1 # checkout the student branch
+# checkout the student branch. if the branch does not exist, exit
+git checkout $1 || exit 1
 
-cp ../grading/$2/$1.pdf ./ # copy the graded assignment to student repository
-cp -r ../../../Labs/$2/$2'Solution' ./$2'Solution' # copy the solution to student repository
+# copy the graded assignment to student repository. if wrong filename, exit
+cp ../grading/$2/$1.pdf ./  || exit 1
+# copy the solution to student repository. if wrong directory, remove graded file and exit
+cp -r ../../../Labs/$2/$2'Solution' ./$2'Solution' || rm $1.pdf ; exit 1 
 
 git add $1.pdf # add the graded assignment
 git add $2'Solution' # add the solution
