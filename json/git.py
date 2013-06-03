@@ -17,6 +17,7 @@ def checkout(localBranch) :
   '''
   git checkout localBranch
   '''
+  logging.debug("checkout("+localBranch+")")
   pass
 
 def add(file) :
@@ -29,11 +30,13 @@ def commit(message) :
   '''
   git commit -m'message'
   '''
+  logging.debug("git.commit("+message+")")
   pass
 
 def push(remote, branch) :
   '''
   git push remote branch
   '''
+  logging.debug("git.push("+remote+','+branch+")")
   pass
 
