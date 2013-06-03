@@ -21,26 +21,65 @@
 #     source ./lib.sh
 
 
-function getRemote {
-  # Adds a remote repository to the current local repository, checks
-  # out the remote master into a new branch, and switches to that branch.
-  # Returns 0 if successful, or 1 if failed. If failed, any changes to
-  # local repository are undone.
-  # 
-  # $1 teamname (e.g., smith-johnson)
-  # $2 repo (e.g., lab1.git)
-  #
-  # Example call
-  #     $ getBranch smith-johnson lab1.git
-  #
-  # New branch is smith-johnson.
-  # Remote is smith -> git@bitbucket.org:smith/lab1.git.
-  #
-  if git remote add -f ${1%%-*} git@bitbucket.org:${1%%-*}/$2 ; then
-    git checkout -b $1 ${1%%-*}/master
-    return 0
-  else
-    git remote remove ${1%%-*}
-    return 1
+# Function die $1 $2
+#
+#       $1 - Message printed to stderr.
+#       $2 - Rollback routine to call.
+#       $* - Remaining arguments passed to $2
+#
+#       DON'T CALL die FROM ROLLBACK!!!!
+#
+# Example
+#
+#       command || die "Command failed" rollback arg1 arg2
+#
+function die {
+  # Print error message if provided.
+  if [ -n "$1" ] ; then
+    echo -e "$1"
   fi
+
+  # Call rollback if defined.
+  if type "$2" &> /dev/null ; then
+    command="$2"
+    shift 2
+    "$command" $@
+  fi
+
+  # Exit with proper error code.
+  exit 1
 }
+
+
+
+# Adds a remote repository to the current local repository, checks
+# out the remote master into a new branch, and switches to that branch.
+# Returns 0 if successful, or 1 if failed. If failed, any changes to
+# local repository are undone.
+# 
+# $1 teamname (e.g., smith-johnson)
+# $2 repo (e.g., lab1.git)
+#
+# Example call
+#     $ getBranch smith-johnson lab1.git
+#
+# New branch is smith-johnson.
+# Remote is smith -> git@bitbucket.org:smith/lab1.git.
+function getRemote {
+
+  # Callback to undo changes.
+  function undo {
+    remote="${1%%-*}"
+    echo -e "Removing remote '$remote'."
+    # Remove the remote.
+    git remote remove "$remote"
+  }
+
+  # Try to add and fetch remote. Undo and abort on failure.
+  remote="git@bitbucket.org:${1%%-*}/$2"
+  git remote add -f ${1%%-*} $remote || \
+    die "No such remote: $remote - aborting" undo "$1"
+  # Create and switch to new branch for remote.
+  git checkout -b $1 ${1%%-*}/master
+}
+

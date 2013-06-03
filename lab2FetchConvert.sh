@@ -35,8 +35,9 @@ source "$(dirname "$0")/lib.sh"
 
 cd Lab2 # folder for local repository
 
-# add and fetch remote for the student repository, if it fails, rollback and exit
-getRemote $1 lab2.git || exit 1
+# Fetch repo into branch and switch to it.
+# Exits with error on failure.
+getRemote $1 lab2.git
 
 git fetch ${1%%-*} # fetch the student work
 git checkout -b $1 ${1%%-*}/master # make a student branch

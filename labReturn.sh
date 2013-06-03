@@ -36,12 +36,20 @@ source "$(dirname "$0")/lib.sh"
 cd $2 # folder for local repository
 
 # checkout the student branch. if the branch does not exist, exit
-git checkout $1 || exit 1
+git checkout $1 || die "Could not checkout branch '$1' --- aborting."
 
 # copy the graded assignment to student repository. if wrong filename, exit
-cp ../grading/$2/$1.pdf ./  || exit 1
+cp ../grading/$2/$1.pdf ./  || \
+  die "Could not copy '../grading/$2/$1.pdf' to ./ --- aborting."
+
+# Callback to undo previous command if next fails.
+function undo {
+  rm "$1.pdf"
+}
+
 # copy the solution to student repository. if wrong directory, remove graded file and exit
-cp -r ../../../Labs/$2/$2'Solution' ./$2'Solution' || rm $1.pdf ; exit 1 
+cp -r ../../../Labs/$2/$2'Solution' ./$2'Solution' || \
+  die "Could not copy ../../../Labs/$2/${2}Solution to ./${2}Solution" undo "$1"
 
 git add $1.pdf # add the graded assignment
 git add $2'Solution' # add the solution

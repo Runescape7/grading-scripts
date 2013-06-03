@@ -35,8 +35,9 @@ source "$(dirname "$0")/lib.sh"
 
 cd Lab1 # folder for local repository
 
-# add and fetch remote for the student repository, if it fails, rollback and exit
-getRemote $1 lab1.git || exit 1
+# Fetch repo into branch and switch to it.
+# Exits with error on failure.
+getRemote $1 lab1.git
 
 # Convert file(s) to PDF(s) and place in grading directory
 ~/Dropbox/a2pdf-1.13-OSX-Intel/a2pdf --noperl-syntax Lab1/HelloWorld.java > ../grading/Lab1/$1.java.pdf
