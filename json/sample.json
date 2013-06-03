@@ -1,0 +1,15 @@
+{
+  "git_project" : "lab1.git",
+  "grade_directory_root" : "../grading/lab1",
+
+  "bitbucket_team_accounts" : {
+    "alice-eve" : "alice",
+    "bob-ed-jamie" : "bob",
+    "fred-jane" : "fred"
+  },
+
+  "files_to_grade" : [
+    "f1.txt",
+    "dir/f2.java"
+  ],
+}
