@@ -31,71 +31,55 @@
 
 # Parameter 2 is name of the assignment e.g. Lab1
 
-cd $2 # folder for local repository
+# Fail on error (don't keep running).
+set -e
 
-git checkout $1 # checkout the student branch
+# Set this to "true" to have rollback to undo last commit.
+ROLLBACK_COMMIT=
 
-cp ../grading/$2/$1.pdf ./ # copy the graded assignment to student repository
-cp -r ../../../Labs/$2/$2'Solution' ./$2'Solution' # copy the solution to student repository
+# Undo changes.
+function rollback {
+  if [ "$ROLLBACK_COMMIT" == "true" ] ; then
+    git reset --hard HEAD^
+  else
+    git reset --hard HEAD
+    git clean -df
+  fi
+  git checkout master
+  cd -
+  exit 1
+}
 
-git add $1.pdf # add the graded assignment
-git add $2'Solution' # add the solution
+# Register rollback to run on exit.
+trap rollback EXIT
 
-git commit -m"Returned graded $2 (and solution)" # commit the graded assignment
-git push ${1%%-*} $1 # push the changes to student repository
+# folder for local repository
+cd $2
 
-git checkout master # return to the master branch
+# checkout the student branch
+git checkout $1
 
+# copy the graded assignment to student repository
+cp ../grading/$2/$1.pdf ./
 
+# copy the solution to student repository
+cp -r ../../../Labs/$2/$2'Solution' ./$2'Solution'
 
+# add the graded assignment
+git add $1.pdf
 
+# add the solution
+git add $2'Solution'
 
+# commit the graded assignment
+git commit -m"Returned graded $2 (and solution)"
 
+# Flag that commit has occurred in case of rollback.
+ROLLBACK_COMMIT="true"
 
+# push the changes to student repository
+git push ${1%%-*} $1
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# return to the master branch
+git checkout master 
 
