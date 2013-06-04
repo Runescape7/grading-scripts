@@ -1,0 +1,3 @@
+Although JSON might be nice for configuration, this branch has become
+over-engineered. I'm abandoning this branch in favor of the master.
+  - Stoney <dr.stoney@gmail.com>
