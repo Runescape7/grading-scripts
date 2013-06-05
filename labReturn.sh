@@ -49,15 +49,21 @@ function rollback {
   cd -
   exit 1
 }
-
-# Register rollback to run on exit.
-trap rollback EXIT
+# Doesn't do anything.
+function noop {
+  return 0
+}
 
 # folder for local repository
 cd $2
 
 # checkout the student branch
 git checkout $1
+# DO NOT ADD CODE BETWEEN PREVIOUS AND NEXT STATEMENT.
+# Don't set the trap earlier or else rollback will undo changes
+# in the current branch, not the student branch!
+# Register rollback to run on exit.
+trap rollback EXIT
 
 # copy the graded assignment to student repository
 cp ../grading/$2/$1.pdf ./
@@ -73,12 +79,15 @@ git add $2'Solution'
 
 # commit the graded assignment
 git commit -m"Returned graded $2 (and solution)"
-
+# DO NOT ADD CODE BETWEEN PREVIOUS AND NEXT STATEMENT.
 # Flag that commit has occurred in case of rollback.
 ROLLBACK_COMMIT="true"
 
 # push the changes to student repository
 git push ${1%%-*} $1
+# DO NOT ADD CODE BETWEEN PREVIOUS AND NEXT STATEMENT.
+# Unregister rollback. Too late to rollback now.
+trap noop EXIT 
 
 # return to the master branch
 git checkout master 
