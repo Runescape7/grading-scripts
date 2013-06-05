@@ -23,6 +23,18 @@
 # (or you have to issue a pull request, and maybe merge it depending on
 # how much you want to do for the students.)
 
+####################################################################
+# SETUP
+#
+# cp grading-scripts/test/test* grading-scripts
+# mkdir -p grading/Test
+# grading-scripts/test/gitinit.sh Test
+#
+# RUN
+#
+# bash grading-scripts/testReturn.sh dr_stoney-kwurst
+####################################################################
+
 # The script takes two parameters
 
 # Parameter 1 is the concatenation of all of the Bitbucket accounts of the students in the team, 
@@ -60,22 +72,22 @@ cd $2
 # checkout the student branch
 git checkout $1
 # DO NOT ADD CODE BETWEEN PREVIOUS AND NEXT STATEMENT.
+# Register rollback to run on exit.
 # Don't set the trap earlier or else rollback will undo changes
 # in the current branch, not the student branch!
-# Register rollback to run on exit.
 trap rollback EXIT
 
 # copy the graded assignment to student repository
 cp ../grading/$2/$1.pdf ./
 
 # copy the solution to student repository
-cp -r ../../../Labs/$2/$2'Solution' ./$2'Solution'
+# cp -r ../../../Labs/$2/$2'Solution' ./$2'Solution'
 
 # add the graded assignment
 git add $1.pdf
 
 # add the solution
-git add $2'Solution'
+# git add $2'Solution'
 
 # commit the graded assignment
 git commit -m"Returned graded $2 (and solution)"
@@ -86,7 +98,7 @@ ROLLBACK_COMMIT="true"
 # push the changes to student repository
 git push ${1%%-*} $1
 # DO NOT ADD CODE BETWEEN PREVIOUS AND NEXT STATEMENT.
-# Unregister rollback. Too late to rollback now.
+# Nothing we can do about it now.
 trap noop EXIT 
 
 # return to the master branch
