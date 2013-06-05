@@ -31,9 +31,31 @@
 # e.g. jsmith1-mjones
 # It expects that the first username is the owner of the shared repository.
 
+# Fail on error (don't keep running).
+set -e
+
+# Don't want to rely on parameters inside callback rollback.
+# Construct remote name.
+REMOTE_NAME=${1%%-*}
+
+# Undo changes.
+function rollback {
+  git remote remove $REMOTE_NAME
+  git checkout master
+  rm -f ../grading/Lab1/$1.pdf
+  rm -f ../grading/Lab1/$1.java.pdf
+  rm -f ../grading/Lab1/$1.txt.pdf
+  cd -
+  exit 1
+}
+# Doesn't do anything.
+function noop {
+  return 0
+}
+
 cd Lab1 # folder for local repository
 
-git remote add ${1%%-*} git@bitbucket.org:${1%%-*}/lab2.git # add a remote for the student repository
+git remote add ${1%%-*} git@bitbucket.org:${1%%-*}/lab1.git # add a remote for the student repository
 git fetch ${1%%-*} # fetch the student work
 git checkout -b $1 ${1%%-*}/master # make a student branch
 
